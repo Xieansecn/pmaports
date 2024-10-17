@@ -1,0 +1,36 @@
+# Reference: <https://postmarketos.org/devicepkg>
+# Maintainer: Aster Boese <asterboese@mailbox.org>
+pkgname=device-microsoft-x64surface
+pkgdesc="Microsoft Surface with x64 CPU"
+pkgver=1
+pkgrel=0
+url="https://postmarketos.org"
+license="MIT"
+arch="x86_64"
+options="!check !archcheck"
+depends="
+	alsa-ucm-conf
+	iptsd
+	linux-microsoft-x64surface
+	postmarketos-base
+	systemd-boot
+	"
+makedepends="devicepkg-dev"
+source="deviceinfo modules-initfs"
+_pmb_recommends="
+	oem-intel
+	oem-amd
+"
+
+build() {
+	devicepkg_build $startdir $pkgname
+}
+
+package() {
+	devicepkg_package $startdir $pkgname
+}
+
+sha512sums="
+7c826c6a805a558a137817cfd8f5229af5062717dc1a898d55a4acbebe66ce7f3218e5390dc42b0c1afa107ab92493397695a51b2db1522b8754d7034a37f81b  deviceinfo
+e75b9b8781de4aa9d700d80870a6e38cf990bd068b4785b5af38f5095421f34d6f8621f793a3cc03c949a5dea9777b7b8b0b0ea370ab31d34be2ef2daa93caa0  modules-initfs
+"
