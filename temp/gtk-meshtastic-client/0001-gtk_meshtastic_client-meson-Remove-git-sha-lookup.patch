@@ -1,0 +1,47 @@
+From 571d60c38e2115f09cebb4e31be2cb916d398137 Mon Sep 17 00:00:00 2001
+From: Alistair Francis <alistair@alistair23.me>
+Date: Thu, 17 Oct 2024 19:50:36 +1000
+Subject: [PATCH] gtk_meshtastic_client: meson: Remove git sha lookup
+
+The current code breaks if git is installed, but we aren't in a git repo
+which is what happens if building from a release tarball.
+
+Signed-off-by: Alistair Francis <alistair@alistair23.me>
+---
+ gtk_meshtastic_client/meson.build | 10 ++--------
+ 1 file changed, 2 insertions(+), 8 deletions(-)
+
+diff --git a/gtk_meshtastic_client/meson.build b/gtk_meshtastic_client/meson.build
+index 875d0fe..27a755a 100644
+--- a/gtk_meshtastic_client/meson.build
++++ b/gtk_meshtastic_client/meson.build
+@@ -16,16 +16,10 @@ python = import('python')
+ # Constants
+ PKG_NAME = meson.project_name()
+ PROJECT_RDNN_NAME = 'org.kop316.meshtastic'
+-VCS_TAG = ''
+-git = find_program('git', required : false)
+-if git.found()
+-  GIT_TAG = run_command('git', 'rev-parse', '--short', 'HEAD', check: true).stdout().strip()
+-  VCS_TAG = VCS_TAG.join('-', GIT_TAG)
+-endif
+ 
+ conf = configuration_data()
+ conf.set('PYTHON', python.find_installation('python3').full_path())
+-conf.set('VERSION', meson.project_version() + '-' + VCS_TAG)
++conf.set('VERSION', meson.project_version())
+ conf.set('localedir', get_option('prefix') / get_option('localedir'))
+ conf.set('pkgdatadir', pkgdatadir)
+ conf.set('rdnn_name', PROJECT_RDNN_NAME)
+@@ -46,7 +40,7 @@ configure_file(
+ # Install the builddir executable
+ local_config = configuration_data()
+ local_config.set('PYTHON', python.find_installation('python3').full_path())
+-local_config.set('VERSION', meson.project_version() + VCS_TAG)
++local_config.set('VERSION', meson.project_version())
+ local_config.set('localedir', join_paths(get_option('prefix'), get_option('datadir'), 'locale'))
+ local_config.set('pythondir', meson.global_source_root())
+ local_config.set('pkgdatadir', pkglocaldatadir)
+-- 
+2.47.0
+
