@@ -1,0 +1,55 @@
+# Maintainer: Aster Boese <asterboese@mailbox.org>
+pkgname=iptsd
+pkgver=3.0.0
+_tag=3
+pkgrel=0
+_cli11_ver=2.3.2
+pkgdesc="Userspace daemon for Intel Precise Touch & Stylus"
+url="https://github.com/linux-surface/iptsd"
+arch="x86_64"
+license="gpl-2.0-or-later"
+depends="
+	eigen
+	fmt
+	inih-inireader
+	msgsl
+	spdlog
+"
+makedepends="
+	cmake
+	eigen-dev
+	fmt-dev
+	inih-dev
+	inih-inireader-dev
+	meson
+	samurai
+	sdl2-dev
+	spdlog-dev
+"
+source="
+	https://github.com/linux-surface/iptsd/archive/refs/tags/v$_tag.tar.gz
+	https://github.com/CLIUtils/CLI11/releases/download/v$_cli11_ver/CLI11.hpp
+	0001-use-local-header-for-cli11.patch
+"
+builddir="$srcdir"/"$pkgname"-"$_tag"
+options="!check"
+
+prepare() {
+	default_prepare
+	install -D "$srcdir"/CLI11.hpp "$builddir"/src/CLI/CLI.hpp
+}
+
+build() {
+	abuild-meson . output
+	meson compile -C output
+}
+
+package() {
+	DESTDIR="$pkgdir" meson install --no-rebuild -C output
+}
+
+sha512sums="
+baf735426981e63300d5312188054ce8cc896706fc2af9b5875bf57352759e4b93bf59328d08d845b2caa415bffe3865fcca1b328b43e56f47615528e3419b8b  v3.tar.gz
+4ee9958c7ae84e7e22b4662a0b79ee42aea4ab785d3a18fd167723bec71d94cb6219d31ba9e3bc0861d77f443797cd065036886960001cb4df1ac25d4202c5b9  CLI11.hpp
+57a1b9f11d76d461a75544eacf6af3a5beb48cbcdc69440879b7ab3ec6d7367faa14868e1c343528a97fd80c97272fe4f25e22667c810b6351410e59a27d42e1  0001-use-local-header-for-cli11.patch
+"
