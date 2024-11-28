@@ -15,7 +15,6 @@ depends="
 makedepends="devicepkg-dev"
 source="
 	deviceinfo
-	modules-initfs
 "
 
 build() {
@@ -27,6 +26,5 @@ package() {
 }
 
 sha512sums="
-acbfb7e6617bb32a41a3b218835b4de4046c8e7321708b5089943223bc275987df7fb5a406bebe5051a0041f46013556789e5dbc5853503c681a1d3e00de279d  deviceinfo
-e70bae17df23dcaaaea0e2d3616556f04baa23f8ee1357785c0f539bf97282d8ddff53953e155b72689bb73beb38c2da3d08de2a61e866684edfa10a6593885d  modules-initfs
+60d6170569cc1029ba42855ee5912dd08e5f19ca8d8901d93c712eb07180c30884fd49492288a63f1467b1852ebe7ae4c8a7defe6a8f31417fe9781bbbda2f43  deviceinfo
 "
