@@ -30,5 +30,5 @@ deviceinfo_flash_offset_tags="0x00000100"
 deviceinfo_flash_heimdall_partition_kernel="KERNEL"
 deviceinfo_flash_heimdall_partition_rootfs="system"
 deviceinfo_flash_sparse="true"
-deviceinfo_create_initfs_extra=true
+deviceinfo_create_initfs_extra="true"
 deviceinfo_partition_table="msdos"
