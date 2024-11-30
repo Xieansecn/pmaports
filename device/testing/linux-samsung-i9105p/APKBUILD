@@ -18,10 +18,10 @@ makedepends="
 	devicepkg-dev
 	findutils
 	flex
-	openssl-dev
-	perl
 	gcc4
 	msm-fb-refresher
+	openssl-dev
+	perl
 "
 
 # Compiler: GCC 4 (doesn't boot when compiled with newer versions)
