@@ -4,7 +4,7 @@
 pkgname=device-realme-x3
 pkgdesc="Realme X3"
 pkgver=1
-pkgrel=0
+pkgrel=1
 url="https://postmarketos.org"
 license="MIT"
 arch="aarch64"
@@ -17,6 +17,8 @@ depends="
 	swclock-offset
 "
 makedepends="devicepkg-dev"
+
+_ucm_commit="53f3949f794fd6e0ca816c8ed82cdf2d254645cf"
 source="
 	alsa-ucm-conf/HiFi.conf
 	alsa-ucm-conf/x3.conf
@@ -28,8 +30,6 @@ source="
 
 subpackages="
 	$pkgname-nonfree-firmware:nonfree_firmware
-	$pkgname-alsa_ucm_conf
-	$pkgname-wireplumber
 "
 
 build() {
@@ -38,6 +38,16 @@ build() {
 
 package() {
 	devicepkg_package $startdir $pkgname
+
+	# device-specific alsa-ucm-conf
+	install -Dm644 "$srcdir/HiFi.conf" \
+		"$pkgdir/usr/share/alsa/ucm2/Realme/x3/HiFi.conf"
+
+	install -Dm644 "$srcdir/x3.conf" \
+		"$pkgdir/usr/share/alsa/ucm2/conf.d/sdm845/Realme X3.conf"
+
+	install -Dm644 "$srcdir/51-qcom-sm8150.lua" \
+		-t "$pkgdir/usr/share/wireplumber/wireplumber.conf.d"
 }
 
 nonfree_firmware() {
@@ -57,23 +67,6 @@ nonfree_firmware() {
 
 	install -Dm644 "$srcdir/30-gpu-firmware.files" \
 		 "$subpkgdir/usr/share/mkinitfs/files/30-gpu-firmware.files"
-}
-
-alsa_ucm_conf() {
-	install -Dm644 "$srcdir/HiFi.conf" \
-		"$subpkgdir/usr/share/alsa/ucm2/Realme/x3/HiFi.conf"
-
-	install -Dm644 "$srcdir/x3.conf" \
-		"$subpkgdir/usr/share/alsa/ucm2/Realme/x3/x3.conf"
-
-	mkdir -p "$subpkgdir/usr/share/alsa/ucm2/conf.d/sdm845"
-	ln -s ../../Realme/x3/x3.conf \
-		"$subpkgdir/usr/share/alsa/ucm2/conf.d/sdm845/Realme X3.conf"
-}
-
-wireplumber() {
-	install -Dm644 "$srcdir/51-qcom-sm8150.lua" \
-		-t "$subpkgdir/usr/share/wireplumber/main.lua.d"
 }
 
 sha512sums="
