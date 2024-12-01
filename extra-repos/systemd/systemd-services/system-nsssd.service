@@ -1,0 +1,13 @@
+[Unit]
+Description=nsss daemon
+
+[Service]
+Type=simple
+PIDFile=/run/nsssd.pid
+ExecStart=/usr/bin/s6-ipcserver -- /run/nsssd/s /usr/bin/nsssd-switch 0 /usr/bin/nsssd-nslcd '' 0 /usr/bin/nsssd-unix '' 
+User=nsss
+Group=nsss
+RuntimeDirectory=nsssd
+
+[Install]
+WantedBy=multi-user.target
