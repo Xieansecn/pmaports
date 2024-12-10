@@ -1,10 +1,10 @@
 # Maintainer: Clayton Craft <clayton@craftyguy.net>
 # Co-Maintainer: Caleb Connolly <caleb@postmarketos.org>
 pkgname=linux-postmarketos-qcom-laptop
-pkgver=6.12
-pkgrel=1
+pkgver=6.13_rc6
+pkgrel=0
 # Commit from branch @ https://github.com/jhovold/linux/tree/wip/x1e80100-$pkgver
-_commit="93bd777d19aa0e8b58dee1eb837a16acf56035b0"
+_commit="2cc57105ca61b9fb3744adbf83bbc8b2c0c0d055"
 pkgdesc="Generic kernel for Qualcomm laptops"
 arch="aarch64"
 _carch="arm64"
@@ -16,8 +16,8 @@ options="!strip
 	!tracedeps
 	pmb:cross-native
 	pmb:kconfigcheck-community
-	pmb:kconfigcheck-containers
 	pmb:kconfigcheck-uefi
+	pmb:kconfigcheck-virt
 "
 makedepends="
 	bash
@@ -81,7 +81,7 @@ package() {
 }
 
 sha512sums="
-af20b0d7e46e31de152a01e6c811c691f3866add856d4b8cc3e665fde2f10d0fa4ccb401cf3583e4975c0ccb281369fc019825ad274c4edad49f0e8069c154fc  linux-postmarketos-qcom-laptop-93bd777d19aa0e8b58dee1eb837a16acf56035b0.tar.gz
-c343baeb03f91a16994fd53e7cf1be0590be591c3a02e583d897f6b84ee9b33662cac513f84e1756fed58ab283c16471492bf227a1adb00f5bdd660ea4631ef1  misc.config
-98c3d46a83f496ed3cdb0ae97f9a891ff2acb504205d91646bed23b2efc999d77f486ec905ceebdac08a9d25f51b82caec8857311434a4d9de214f064541df96  pmos.config
+c28f74a6b03c2ebdecbed47d5ed4815ea6eaf32733aaf5e23b82ca6c85c009a61ad075bc84c980e1831642622122aed237f9432e76bbdf2099869f270ffbeeeb  linux-postmarketos-qcom-laptop-2cc57105ca61b9fb3744adbf83bbc8b2c0c0d055.tar.gz
+980eefd8aaee78897cd41d039eecc11e23b8d7cc87b41c869f1e2b83cd9b5dac9813d7bd1a0e7c466303c795f234871080686921b9672983604551903004cb68  misc.config
+c761143bbdb621a1698068b2369473786638dc4b1c34c9c92466b053a7d4a5ed4e69dbdf731b57b40a1eb99b0f92a6ceaed1cc7302ab6584ef9a779cb225538e  pmos.config
 "
