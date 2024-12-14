@@ -1,0 +1,47 @@
+# Forked from Alpine to test master branch with pfs
+
+maintainer="team/phosh <fossdd@pwned.life>"
+pkgname=xdg-desktop-portal-phosh
+pkgver=0.42.0_git20241214
+_commit="e5d4138e9bafaef65f2c0040f852e47b303787ff"
+pkgrel=0
+pkgdesc="xdg-desktop-portal implementation using GTK/GNOME/Phosh"
+url="https://gitlab.gnome.org/guidog/xdg-desktop-portal-phosh"
+arch="all"
+license="GPL-3.0-or-later"
+depends="
+	gsettings-desktop-schemas
+	xdg-desktop-portal
+	"
+makedepends="
+	gnome-desktop-dev
+	libadwaita-dev
+	meson
+	xdg-desktop-portal-dev
+	cargo
+	"
+source="https://gitlab.gnome.org/guidog/xdg-desktop-portal-phosh/-/archive/$_commit/xdg-desktop-portal-phosh-$_commit.tar.gz"
+options="!check" # no tests
+builddir="$srcdir/$pkgname-$_commit"
+
+build() {
+	abuild-meson \
+		--wrap-mode=default \
+		. output
+	meson compile -C output
+}
+
+check() {
+	meson test --no-rebuild --print-errorlogs -C output
+}
+
+package() {
+	DESTDIR="$pkgdir" meson install --no-rebuild -C output
+
+	# We don't ship systemd
+	rm -fr "$pkgdir"/usr/lib/systemd
+}
+
+sha512sums="
+21589eabdeaf97f9e46f9f803f02ee42c01d480f4fc38241ac24c618bd64d1dd5b82b5544440d8d99dc618b8776c5001f890562007797c5719c5320cf76c997b  xdg-desktop-portal-phosh-e5d4138e9bafaef65f2c0040f852e47b303787ff.tar.gz
+"
