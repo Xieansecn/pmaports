@@ -1,0 +1,32 @@
+# Reference: <https://postmarketos.org/devicepkg>
+pkgname=device-huawei-alice
+pkgdesc="Huawei P8 Lite"
+pkgver=1
+pkgrel=0
+url="https://postmarketos.org"
+license="MIT"
+arch="aarch64"
+options="!check !archcheck"
+depends="postmarketos-base linux-huawei-alice mkbootimg msm-fb-refresher postmarketos-base-downstream"
+makedepends="devicepkg-dev"
+source="deviceinfo"
+
+subpackages="$pkgname-nonfree-firmware:nonfree_firmware"
+
+nonfree_firmware() {
+	pkgdesc="WiFi firmware"
+	depends="firmware-huawei-alice"
+	mkdir "$subpkgdir"
+}
+
+build() {
+	devicepkg_build $startdir $pkgname
+}
+
+package() {
+	devicepkg_package $startdir $pkgname
+}
+
+sha512sums="
+c8590f46fcdfcd81cc8707bb493a0a4fa417f2d3fe551753ad6aed3804bcd810810e053444f7f018d8f4f272995db28fd6e23fbfd4fcc46aa915da1775e80f77  deviceinfo
+"
