@@ -3,7 +3,7 @@
 # Maintainer: Aster Boese <asterboese@mailbox.org>
 pkgname=linux-postmarketos-apple
 pkgver=6.1.0_rc1
-pkgrel=2
+pkgrel=4
 pkgdesc="Mainline kernel fork for Apple iPhone and iPad devices"
 arch="aarch64"
 _carch="arm64"
@@ -52,5 +52,5 @@ package() {
 
 sha512sums="
 96c339d32c602f68700755d9aa7f7f867d5d89639d9126023fd7eca7f12c55a700308addefde95023b5847277c8506dc3f091118d1ff15fad7f2a3d0edd9f1f1  bdffb36db88ab94ee624af340fef87cdb2b4aef3.tar.gz
-61e666d28ddc027a27ecb9f7f43741f960e3c8fb097b12dc28801d057d8aa86fb14d2832aced00ea75e0115714d9afc89766a628fc32c11e548cb034c5195fe3  config-apple-iphone6.aarch64
+1ed6df425f859713b2f591fcb82d00448c2cecc4bd5b70688ff95ca11996aa6db7bc749b4f086a732893ad047d92d15339d1571aa4579106fd6c59c7d498877f  config-apple-iphone6.aarch64
 "
