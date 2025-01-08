@@ -47,7 +47,9 @@ setup_log() {
 	echo on > /proc/sys/kernel/printk_devkmsg
 
 	# Spawn syslogd to log to the kernel
-	syslogd -K
+	# syslog will try to read from stdin over and over which can pin a cpu when stdin is /dev/null
+	# so ensure it has some stdin that will just block the read forever.
+	sleep 99d | syslogd -K
 
 	local pmsg="/dev/pmsg0"
 
