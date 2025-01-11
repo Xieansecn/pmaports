@@ -1,0 +1,25 @@
+# Maintainer: Richard Acayan <mailingradian@gmail.com>
+# Reason for temp: qrtr is a dependency
+pkgname=sensh
+pkgver=2.1.1
+pkgrel=0
+pkgdesc="Interactive shell for Qualcomm SSC"
+url="https://gitlab.com/flamingradian/sensh"
+arch="aarch64"
+license="GPL-3.0-or-later"
+makedepends="meson protobuf-c-dev qrtr-dev"
+source="https://gitlab.com/flamingradian/sensh/-/archive/v$pkgver/sensh-v$pkgver.tar.gz"
+options="!check" # no unit tests
+builddir="$srcdir/sensh-v$pkgver"
+
+build() {
+	abuild-meson . output
+	meson compile -C output
+}
+
+package() {
+	install -Dm755 -t "$pkgdir"/usr/bin/ "$builddir"/output/sensh
+}
+sha512sums="
+a63eb992f5dab2d30678ece727a3490fd566143a6bc797abeac5a9a60a3156affc56a82df5937205a573cb21ed4a0e3eaa39728a62f650f25ce43739fb622d21  sensh-v2.1.1.tar.gz
+"

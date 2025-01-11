@@ -3,14 +3,30 @@
 supervisor=supervise-daemon
 command="/usr/libexec/iio-sensor-proxy"
 
-# In some devices like OP6T/AYN Odin/Miatoll hexagonrpcd might take longer time to get initialized
-# and iio-sensor-proxy may die before that. Let's workaround it by adding a 15 seconds delay.
-# It doesnt break other devices and makes it work in devices like the OP6T, AYN Odin and Miatoll.
-# This is just a temporary workaround.
+# In some devices like OP6T/AYN Odin/Miatoll, the DSP might take longer time to
+# read the sensor registry from HexagonRPCD, and iio-sensor-proxy may start
+# before that. On Android, the registry sensor is polled, so use sensh to wait.
+# This is just a temporary workaround until libssc can do it by itself.
 start_pre() {
-	sleep 15
+	command -v sensh || return 0
+
+	if ! qrtr-lookup 2>/dev/null | grep -q 'Snapdragon Sensor Core service'
+	then
+		return 0
+	fi
+
+	time=0
+	while [ "$time" -lt 150 ] && ! sensh lookup registry | head -n 2 | grep -q 'registry sensor found'
+	do
+		# Millisecond sleeping isn't in POSIX. Do it anyway to speed up
+		# the waiting.
+		sleep 0.1
+		time=$((time+1))
+	done
 }
 
 depend() {
 	need dbus
+	after hexagonrpcd-adsp-sensorspd
+	after hexagonrpcd-sdsp
 }
