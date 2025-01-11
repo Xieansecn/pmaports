@@ -2,7 +2,7 @@
 pkgname=device-samsung-starqltechn
 pkgdesc="Samsung Galaxy S9 SM-G9600"
 pkgver=7
-pkgrel=0
+pkgrel=1
 url="https://postmarketos.org"
 license="MIT"
 arch="aarch64"
@@ -10,6 +10,10 @@ options="!check !archcheck"
 depends="postmarketos-base linux-postmarketos-qcom-sdm845 mkbootimg u-boot-starqltechn u-boot-tools dtc"
 makedepends="devicepkg-dev dtc"
 source="deviceinfo boot_image.its payload_mock.dts bootscript.sh"
+
+subpackages="
+	$pkgname-nonfree-firmware:nonfree_firmware
+"
 
 build() {
 	devicepkg_build $startdir $pkgname
@@ -29,6 +33,14 @@ package() {
 		"$pkgdir"/usr/share/u-boot/starqltechn/
 }
 
+nonfree_firmware() {
+	pkgdesc="Firmware files, including Modem, GPU and more"
+	depends="firmware-samsung-sdm845
+		soc-qcom-sdm845-nonfree-firmware
+		soc-qcom-sdm845-modem
+	"
+	mkdir "$subpkgdir"
+}
 
 sha512sums="
 3e156438c0630f830bcde96e13a003a15e399f5bd610707a099aa8d936e1bafb4a92560b4e69a3ebff8371c3f35bce502a34f5ee6221cbbcd6d96f9c20a258b3  deviceinfo
