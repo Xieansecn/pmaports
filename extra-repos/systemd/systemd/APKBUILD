@@ -5,7 +5,7 @@
 pkgname=systemd
 pkgver=256.5
 _pkgver="musl-v${pkgver//_/-}"
-pkgrel=5
+pkgrel=6
 pkgdesc="System and service manager"
 url="https://github.com/systemd/systemd"
 arch="all !ppc64le !armhf !s390x" # blocked by pmboostrap not supporting
@@ -213,6 +213,7 @@ package() {
 		$pkgname-journald=$pkgver-r$pkgrel
 		$pkgname-udevd=$pkgver-r$pkgrel
 		!openrc
+		kbd
 		"
 
 	DESTDIR="$pkgdir" meson install --no-rebuild -C build
