@@ -81,6 +81,7 @@ device/*/device-huawei-plank/			@gtrxAC
 device/*/device-lg-judyln/			@Newbyte
 device/*/device-lg-judyp/			@jenneron
 device/*/device-microsoft-surface-rt/		@jenneron @jethrob
+device/*/device-microsoft-x64surface/		@JustSoup321
 device/*/device-nvidia-tegra-armv7/		@clamor-s @okias @mschwalm @nokun
 device/*/device-odroid-xu4/			@Grimler
 device/*/device-oneplus-enchilada/		@calebccff

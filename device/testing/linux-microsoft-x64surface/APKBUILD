@@ -1,0 +1,101 @@
+# Maintainer: Aster Boese <asterboese@mailbox.org>
+pkgname=linux-microsoft-x64surface
+pkgver=6.11.4
+pkgrel=0
+pkgdesc="Mainline kernel for Microsoft Surface devices"
+arch="x86_64"
+_carch="x86_64"
+_flavor="${pkgname#linux-}"
+url="https://kernel.org"
+license="GPL-2.0-only"
+options="!strip !check !tracedeps
+	pmb:cross-native
+	pmb:kconfigcheck-community
+	pmb:kconfigcheck-uefi
+"
+makedepends="
+	bash
+	bison
+	elfutils-dev
+	findutils
+	flex
+	linux-headers
+	openssl-dev
+	perl
+	postmarketos-installkernel
+	gmp-dev
+	mpc1-dev
+	mpfr-dev
+	xz
+"
+_config="config-$_flavor.$arch"
+case $pkgver in
+	*.*.*)	_kernver=${pkgver%.0};;
+	*.*)	_kernver=$pkgver;;
+esac
+source="
+	https://cdn.kernel.org/pub/linux/kernel/v6.x/linux-${pkgver//_/-}.tar.xz
+	$_config
+	0001-secureboot.patch
+	0002-surface3-oemb.patch
+	0003-mwifiex.patch
+	0004-ath10k.patch
+	0005-ipts.patch
+	0006-ithc.patch
+	0007-surface-sam.patch
+	0008-surface-sam-over-hid.patch
+	0009-surface-button.patch
+	0010-surface-typecover.patch
+	0011-surface-shutdown.patch
+	0012-surface-gpe.patch
+	0013-cameras.patch
+	0014-amd-gpio.patch
+	0015-rtc.patch
+"
+builddir="$srcdir/linux-$_kernver"
+
+prepare() {
+	default_prepare
+	cp "$srcdir/config-$_flavor.$CARCH" .config
+}
+
+build() {
+	unset LDFLAGS
+	make ARCH="$_carch" CC="${CC:-gcc}" \
+		KBUILD_BUILD_VERSION="$((pkgrel + 1 ))-postmarketOS"
+}
+
+package() {
+	mkdir -p "$pkgdir"/boot "$pkgdir"/lib/modules
+
+	make -j1 install modules_install \
+		ARCH="$_carch" \
+		INSTALL_MOD_STRIP=1 \
+		INSTALL_MOD_PATH="$pkgdir"/ \
+		INSTALL_PATH="$pkgdir"/boot
+
+	rm -rf "$pkgdir"/usr/lib/firmware
+
+	install -D -m644 "$builddir"/include/config/kernel.release \
+		"$pkgdir"/usr/share/kernel/$_flavor/kernel.release
+}
+
+sha512sums="
+6685d71d60b6bb1b1bed104d71ca99a4909425f13d16be93e1cc1d9a10f3a03b6b55febd225105fcc423cad0932a3784e6a8b6e8ff3a8563adda6378184648e1  linux-6.11.4.tar.xz
+c3a231bed785276cfcbb69f86b75aa19626333794dbba4c88986fbb17bf5a4913194eb478b04bc35d415bb0682b1d457f8cda1e7ebe988f48908cfdabf878528  config-microsoft-x64surface.x86_64
+6645063f36a6b22d8130b437c4910374799ce00f64118b4c110053674cf40e7b22a400816fb0a8e539300e4b712421845108cac4925fc0ee05a186bd268d14b6  0001-secureboot.patch
+60ebf274bdb38eb85fcfb60372e786d78ed01d0c0f88dfd65f734091a88fdc4683612bb184d9a48553680c9e806dfbc9ac412286f29ba0f1e8240ba734008692  0002-surface3-oemb.patch
+fd8dc0595ecd1040f093e7d3c324c528d370f1aca18e0a0a9830c0e1a9e486e9a9c2d2635fa891535cfceb880e55245a981c73b5defe4467d052118c2b458a12  0003-mwifiex.patch
+34592bf41195be23c7c1b6eb5fa25b9a88620459bb90bbf74fa645b6b6a8aae3a15c009eba06219d44ca5f70db91b16066623cddaff9f82b8ebfd325bbe20279  0004-ath10k.patch
+a5285676bf74341beede7dbbdc89b021b3b8a4276229b3c9bc39100f0716b960fc8f4882f1330b5e586a12bf3dfcc799fd588a8fd5abc44d644f55113955a8d4  0005-ipts.patch
+eb49893a4b7abfa137fe6b9442fa84aaa67f4ae21c3e1e8c5fcfb451a7541ee0750f2495ed1c1f61bf9c210302a2ba619d7ae1c99f520710b629bc35db8090d7  0006-ithc.patch
+e504a18770cc62c5201345210d95635de908f8ac2284ac6603b391f2599138fb9287653f8fe008de27b34f9869009227596e642ce2bf0535302e755d34fb4f98  0007-surface-sam.patch
+2eb343328f976c87b1ecf9905a908cb496d4d07e2dcada37caa2bc230b9270df96dbe56ba578d24d431cd8700d4bc30f2012348f7a4fa20f726273db6b59f0a4  0008-surface-sam-over-hid.patch
+715a537e38f26050ec946027ade95a4ab6b753e8f5c952fdd2784307f30a25f123a298ac49cbe582d4fe1f634929f9ee326362aced74a3b962ce48691bbda6b4  0009-surface-button.patch
+7836b9ca04e9b24e6b0810738edcbc1d551c4e6b99ec7f12dcb8fd2c9935f30532d6d93848be47f4a4e93f843d13ea498fc382b4ac156ce7aa7063e50ff5dfe6  0010-surface-typecover.patch
+c25130df98789cab18f6d5496cf70c636f87b2aeb69ae0a4654f1daab462fb799b84423fe2b5a67133079ba9e27b83231bd6fa4dc840309cf694e84ec0205e72  0011-surface-shutdown.patch
+85cd864521c784f274f954bf7e2e35b68b8b75b22e56c2424c502fb30836d351807c0bcc64bf398cb0beb27856116a21a1fb87fbc2c817a9f6d647cdc0f9d563  0012-surface-gpe.patch
+a945d708dd0f39cf14fccd0745e2056c809ffd80848c24e09ce7172d9b46a879ba74d632e4d093f11d4c233bea6e540acfb2511b6cea4ab445b0c501af7eba2c  0013-cameras.patch
+97160d3d644711482436ccafb7db10eba315b428e4305296664ab3ae915a7460a7cc52a7739daa0c5810b8b0e870a1027919fed610ef3078b3b5b7687de21ec4  0014-amd-gpio.patch
+1fd9179111fb5591a81f911d1378a1f2bcedd1a8d3a977267fa02ebbd9194722f48e148f660a794c55c9e25b21653fadb4b05602b82453d47794d793a2547473  0015-rtc.patch
+"

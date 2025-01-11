@@ -1,0 +1,37 @@
+From 1c1c0aefcf1cc769cba11ad401d4fb9705a56595 Mon Sep 17 00:00:00 2001
+From: Aster Boese <asterboese@mailbox.org>
+Date: Fri, 18 Oct 2024 16:39:20 -0400
+Subject: [PATCH] use local header for cli11
+
+---
+ src/meson.build | 7 -------
+ 1 file changed, 7 deletions(-)
+
+diff --git a/src/meson.build b/src/meson.build
+index dca81b0..65983d1 100644
+--- a/src/meson.build
++++ b/src/meson.build
+@@ -54,12 +54,6 @@ dependency_options = [
+ ]
+ 
+ # Dependencies
+-cli11 = dependency(
+-	'CLI11',
+-	fallback: ['cli11', 'CLI11_dep'],
+-	default_options: dependency_options,
+-)
+-
+ eigen = dependency(
+ 	'eigen3',
+ 	fallback: ['eigen', 'eigen_dep'],
+@@ -101,7 +95,6 @@ stdcppfs = cpp.find_library('stdc++fs')
+ 
+ # Default dependencies
+ default_deps = [
+-	cli11,
+ 	eigen,
+ 	fmt,
+ 	inih,
+-- 
+2.46.2
+

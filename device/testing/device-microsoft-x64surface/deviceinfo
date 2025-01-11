@@ -1,0 +1,22 @@
+# Reference: <https://postmarketos.org/deviceinfo>
+# Please use double quotes only. You can source this file in shell
+# scripts.
+
+deviceinfo_format_version="0"
+deviceinfo_name="Microsoft Surface with x86_64 CPU"
+deviceinfo_manufacturer="Microsoft"
+deviceinfo_codename="microsoft-x64surface"
+deviceinfo_arch="x86_64"
+
+# Device related
+# Most are tablets but function as laptops
+deviceinfo_chassis="laptop"
+deviceinfo_keyboard="true"
+deviceinfo_external_storage="true"
+deviceinfo_gpu_accelerated="true"
+
+# Bootloader related
+deviceinfo_flash_method="none"
+deviceinfo_kernel_cmdline="PMOS_FORCE_PARTITION_RESIZE quiet"
+deviceinfo_boot_filesystem="fat32"
+deviceinfo_generate_systemd_boot="true"
