@@ -1,0 +1,51 @@
+# Maintainer: Alistair Francis <alistair@alistair23.me>
+pkgname=py3-meshtastic
+_pyname=meshtastic
+pkgver=2.5.2
+pkgrel=0
+pkgdesc="Python API & client shell for talking to Meshtastic devices"
+url="https://github.com/meshtastic/python"
+arch="noarch"
+license="GPL-3.0-only"
+depends="
+	python3
+	py3-protobuf
+	py3-pyserial
+	py3-dotmap
+	py3-pyqrcode
+	py3-tabulate
+	py3-webencodings
+	py3-requests
+	py3-parsing
+	py3-pypubsub
+	py3-bleak
+	py3-print-color
+	py3-pytest-asyncio
+	py3-yaml
+	"
+makedepends="
+	py3-gpep517
+	py3-installer
+	py3-poetry-core
+	py3-wheel
+	py3-bleak
+	py3-pytest-asyncio
+	"
+checkdepends="py3-pytest py3-setuptools py3-pexpect py3-pytest-asyncio"
+source="py3-meshtastic-$pkgver.tar.gz::https://github.com/meshtastic/python/archive/refs/tags/$pkgver.tar.gz"
+builddir="$srcdir"/python-$pkgver
+# meshtastic pytest requires py3-dash, which isn't package in Alpine
+options="!check"
+build() {
+	gpep517 build-wheel \
+		--wheel-dir .dist \
+		--output-fd 3 3>&1 1>&2
+}
+
+package() {
+	python3 -m installer -d "$pkgdir" .dist/*.whl
+}
+
+sha512sums="
+dca7f0c03394cb9e6a1f3650ec5763e1930dc4794b0bf439d13af2706d052225165d4d9b2b9c734a500ce4d480bb1b1c21ef26ee80745f512146e1325f0e18d0  py3-meshtastic-2.5.2.tar.gz
+"

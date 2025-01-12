@@ -1,0 +1,33 @@
+pkgname=gtk-meshtastic-client
+pkgver=0.1.0
+pkgrel=0
+pkgdesc="An unofficial client for Meshtastic devices in GTK4/Libadwaita"
+url="https://gitlab.com/kop316/gtk-meshtastic-client"
+arch="all"
+license="GPL-3.0-or-later"
+depends="python3 py3-meshtastic"
+makedepends="gettext glib-dev meson gtk4.0 libadwaita desktop-file-utils"
+builddir="$srcdir/$pkgname-$pkgver-Alpha"
+source="
+	https://gitlab.com/kop316/gtk-meshtastic-client/-/archive/$pkgver-Alpha/gtk-meshtastic-client-$pkgver-Alpha.tar.gz
+	0001-gtk_meshtastic_client-meson-Remove-git-sha-lookup.patch
+	"
+
+build() {
+	abuild-meson \
+		. output
+	meson compile -C output
+}
+
+check() {
+	meson test --no-rebuild --print-errorlogs -C output
+}
+
+package() {
+	DESTDIR="$pkgdir" meson install --no-rebuild -C output
+}
+
+sha512sums="
+2057ae7ecb1d37d4d2ce72ef081148c80d582cbb1c59e538bc8242f7d3cc442e7e5f643c1238154afd987d13765f55915ced360075815832efea74faadc13394  gtk-meshtastic-client-0.1.0-Alpha.tar.gz
+5494ae7fdbe48dcf5746cd47aad907b89987b4848c27d9e7b2d802271293cf0ee2bb0332a3a50d1b942bf9a4fae8b21cfbdb7fc8a6d3648db9a625df9dd86c5e  0001-gtk_meshtastic_client-meson-Remove-git-sha-lookup.patch
+"
